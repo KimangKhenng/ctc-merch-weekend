@@ -32,14 +32,10 @@
 import CartCard from '@/components/carts/CartCard.vue';
 export default {
     components: { CartCard },
-    emits: ['cartUpdated'],
-    data() {
-        return {
-            carts: [
-                { id: '01', name: 'Semicolon Sticker Pack', price: 5.6, quantity: 2 },
-                { id: '02', name: 'Git Push Mug', price: 2, quantity: 1 },
-                { id: '03', name: 'Dark Mode Tee', price: 8, quantity: 1 },
-            ]
+    emits: ['removeProduct'],
+    props: {
+        carts: {
+            type: Object, required: true
         }
     },
     computed: {
@@ -51,8 +47,7 @@ export default {
     },
     methods: {
         removeProduct(id) {
-            this.carts = this.carts.filter((item) => item.id !== id)
-            this.$emit('cartUpdated', this.cartCount)
+            this.$emit('removeProduct', id)
         }
     }
 }

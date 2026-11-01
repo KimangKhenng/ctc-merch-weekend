@@ -20,7 +20,7 @@
                 <div class="flex gap-2">
                     <button
                         class="border-2 border-black bg-white px-2 py-2 text-xs font-extrabold uppercase cursor-pointer">Save</button>
-                    <button
+                    <button @click="$emit('addToCart', product)"
                         class="border-2 border-black bg-brand text-white shadow-brutal-sm px-3 py-2 text-xs font-extrabold uppercase cursor-pointer hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">Add</button>
                 </div>
             </div>
@@ -44,6 +44,7 @@ export default {
                 }
             }
         }
-    }
+    },
+    emits: ['addToCart'],
 }
 </script>
