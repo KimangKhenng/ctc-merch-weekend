@@ -2,45 +2,13 @@
     <section id="cart" class="max-w-3xl mx-auto px-6 py-14">
         <div class="flex items-center gap-3 mb-6">
             <div class="w-4 h-4 bg-brand border-2 border-black"></div>
-            <h2 class="text-2xl font-black uppercase">Your cart (4 items)</h2>
+            <h2 class="text-2xl font-black uppercase">Your cart ({{ cartCount }} items)</h2>
         </div>
 
         <div class="bg-white border-4 border-black shadow-brutal p-5">
             <ul class="space-y-3">
                 <!-- 6a. CART ROWS (3 copies) -->
-                <li class="flex items-center justify-between gap-3 border-2 border-black bg-paper p-3">
-                    <div>
-                        <p class="text-sm font-extrabold uppercase">Semicolon Sticker Pack</p>
-                        <p class="text-xs font-medium">$4.00 × 2</p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <p class="font-black">$8.00</p>
-                        <button
-                            class="border-2 border-black bg-white px-2 py-1 text-xs font-extrabold uppercase cursor-pointer hover:bg-brand hover:text-white">Remove</button>
-                    </div>
-                </li>
-                <li class="flex items-center justify-between gap-3 border-2 border-black bg-paper p-3">
-                    <div>
-                        <p class="text-sm font-extrabold uppercase">Git Push Mug</p>
-                        <p class="text-xs font-medium">$12.00 × 1</p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <p class="font-black">$12.00</p>
-                        <button
-                            class="border-2 border-black bg-white px-2 py-1 text-xs font-extrabold uppercase cursor-pointer hover:bg-brand hover:text-white">Remove</button>
-                    </div>
-                </li>
-                <li class="flex items-center justify-between gap-3 border-2 border-black bg-paper p-3">
-                    <div>
-                        <p class="text-sm font-extrabold uppercase">Dark Mode Tee</p>
-                        <p class="text-xs font-medium">$22.00 × 1</p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <p class="font-black">$22.00</p>
-                        <button
-                            class="border-2 border-black bg-white px-2 py-1 text-xs font-extrabold uppercase cursor-pointer hover:bg-brand hover:text-white">Remove</button>
-                    </div>
-                </li>
+                <CartCard v-for="(item, index) in carts" :key="index" :product="item" @remove="removeProduct" />
             </ul>
 
             <!-- 6b. EMPTY CART (hidden now — show it when the cart has no rows) -->
@@ -60,3 +28,32 @@
         </div>
     </section>
 </template>
+<script>
+import CartCard from '@/components/carts/CartCard.vue';
+export default {
+    components: { CartCard },
+    emits: ['cartUpdated'],
+    data() {
+        return {
+            carts: [
+                { id: '01', name: 'Semicolon Sticker Pack', price: 5.6, quantity: 2 },
+                { id: '02', name: 'Git Push Mug', price: 2, quantity: 1 },
+                { id: '03', name: 'Dark Mode Tee', price: 8, quantity: 1 },
+            ]
+        }
+    },
+    computed: {
+        cartCount() {
+            return this.carts.reduce((sum, item) => {
+                return sum + item.quantity
+            }, 0)
+        }
+    },
+    methods: {
+        removeProduct(id) {
+            this.carts = this.carts.filter((item) => item.id !== id)
+            this.$emit('cartUpdated', this.cartCount)
+        }
+    }
+}
+</script>

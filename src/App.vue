@@ -1,12 +1,12 @@
 <template>
   <div class="min-h-screen bg-paper text-black font-sans">
     <AnnouncementBar />
-    <NavHeader />
+    <NavHeader :cart-count="cartCount" />
     <main id="top">
       <HeroSection />
       <FilterBar />
       <ProductSection />
-      <CartSection />
+      <CartSection @cart-updated="updateCart" />
       <PerkSection />
       <FAQSection />
       <NewsSletter />
@@ -37,6 +37,16 @@ export default {
     NewsSletter,
     FooterSection,
     AnnouncementBar
+  },
+  data() {
+    return {
+      cartCount: 3
+    }
+  },
+  methods: {
+    updateCart(num) {
+      this.cartCount = num
+    }
   }
 }
 </script>
