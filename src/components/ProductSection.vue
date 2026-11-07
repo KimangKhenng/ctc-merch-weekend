@@ -1,5 +1,15 @@
 <template>
     <section class="max-w-6xl mx-auto px-6 py-6">
+        <!-- PER PAGE SELECT (UI only) -->
+        <div class="mb-6 flex justify-end">
+            <label class="flex items-center gap-2 font-extrabold uppercase">
+                Per page
+                <select v-model="meta.limit"
+                    class="bg-white border-4 border-black shadow-brutal px-3 py-2 font-extrabold uppercase cursor-pointer hover:bg-yellow-300 focus:outline-none focus:bg-yellow-300">
+                    <option v-for="(item, index) in perPages" :value="item" :key="index"> {{ item }}</option>
+                </select>
+            </label>
+        </div>
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <ProductCard v-for="(item, index) in products" :key="index" :product="item" @add-to-cart="addToCart" />
         </div>
@@ -30,9 +40,10 @@ export default {
     data() {
         return {
             products: [],
+            perPages: [8, 16, 24, 32],
             meta: {
                 page: 1,
-                limit: 10
+                limit: 8
             },
             loading: false,
             error: {}
@@ -40,6 +51,13 @@ export default {
     },
     created() {
         this.fetchProducts()
+    },
+    watch: {
+        meta: {
+            async handler(newVal, oldVal) {
+                await this.fetchProducts()
+            }, deep: true
+        }
     },
     emits: ['addToCart'],
     methods: {
@@ -52,7 +70,7 @@ export default {
                 const products = await fetch(`https://brutal-api-sample.onrender.com/api/products?category=All&page=${this.meta.page}&limit=${this.meta.limit}`)
                 const data = await products.json()
                 this.products = data.data
-                this.meta = data.meta
+                // this.meta = data.meta
             } catch (err) {
                 this.error = err.message
             } finally {
