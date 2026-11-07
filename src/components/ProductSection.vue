@@ -35,10 +35,18 @@ export default {
             this.$emit('addToCart', product)
         },
         async fetchProducts() {
-            const products = await fetch("https://brutal-api-sample.onrender.com/api/products?category=All&page=1&limit=10")
-            const data = await products.json()
-            console.log("Hello")
-            console.log(data)
+            this.loading = true
+            try {
+                const products = await fetch("https://brutal-api-sample.onrender.com/api/products?category=All&page=1&limit=10")
+                const data = await products.json()
+                console.log("Hello")
+                console.log(data)
+            } catch (err) {
+                this.error = err.message
+                this.loading = false
+            } finally {
+                this.loading = false
+            }
         }
     }
 }
