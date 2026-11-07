@@ -33,6 +33,19 @@ import CartCard from '@/components/carts/CartCard.vue';
 export default {
     components: { CartCard },
     emits: ['removeProduct'],
+    data() {
+        return {
+            count: 0
+        }
+    },
+    beforeCreate() { console.log("Logger: beforeCreate. count =", this.count); },
+    created() { console.log("Logger: created. count =", this.count); },
+    beforeMount() { console.log("Logger: beforeMount"); },
+    mounted() { console.log("Logger: mounted", this.$el); },
+    beforeUpdate() { console.log("Logger: beforeUpdate"); },
+    updated() { console.log("Logger: updated"); },
+    beforeUnmount() { console.log("Logger: beforeUnmount"); },
+    unmounted() { console.log("Logger: unmounted"); },
     props: {
         carts: {
             type: Object, required: true

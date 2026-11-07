@@ -13,15 +13,32 @@
 import ProductCard from '@/components/products/ProductCard.vue'
 export default {
     components: { ProductCard },
-    props: {
-        products: {
-            type: Object
+    // props: {
+    //     products: {
+    //         type: Object
+    //     }
+    // },
+    data() {
+        return {
+            products: [],
+            meta: {},
+            loading: false,
+            error: {}
         }
+    },
+    created() {
+        this.fetchProducts()
     },
     emits: ['addToCart'],
     methods: {
         addToCart(product) {
             this.$emit('addToCart', product)
+        },
+        async fetchProducts() {
+            const products = await fetch("https://brutal-api-sample.onrender.com/api/products?category=All&page=1&limit=10")
+            const data = await products.json()
+            console.log("Hello")
+            console.log(data)
         }
     }
 }
