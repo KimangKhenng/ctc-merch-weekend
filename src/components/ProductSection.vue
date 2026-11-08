@@ -67,7 +67,9 @@ export default {
         async fetchProducts() {
             this.loading = true
             try {
-                const products = await fetch(`https://brutal-api-sample.onrender.com/api/products?category=All&page=${this.meta.page}&limit=${this.meta.limit}`)
+                const BASE = import.meta.env.VITE_API_URL;
+                // Config
+                const products = await fetch(`${BASE}/products?category=All&page=${this.meta.page}&limit=${this.meta.limit}`)
                 const data = await products.json()
                 this.products = data.data
                 // this.meta = data.meta
