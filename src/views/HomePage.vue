@@ -1,8 +1,8 @@
 <template>
     <HeroSection />
     <FilterBar />
-    <ProductSection :products="products" @add-to-cart="addToCart" />
-    <CartSection @remove-product="removeProduct" :carts="carts" />
+    <ProductSection :products="products" />
+    <CartSection />
     <FAQSection />
     <NewsSletter />
 </template>
@@ -50,21 +50,6 @@ export default {
             return this.carts.reduce((sum, item) => {
                 return sum + item.quantity
             }, 0)
-        }
-    },
-    methods: {
-        removeProduct(id) {
-            this.carts = this.carts.filter((item) => item.id !== id)
-            this.$emit('cartUpdated', this.cartCount)
-        },
-        addToCart(product) {
-            const existingProduct = this.carts.find((item) => item.id === product.id)
-            console.log(existingProduct)
-            if (existingProduct) {
-                existingProduct.quantity++
-            } else {
-                this.carts.push({ id: product.id, name: product.name, price: product.price, quantity: 1 })
-            }
         }
     }
 }

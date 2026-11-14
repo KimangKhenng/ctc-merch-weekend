@@ -6,12 +6,14 @@
         </div>
         <div class="flex items-center gap-3">
             <p class="font-black">${{ total }}</p>
-            <button @click="$emit('remove', product.id)"
+            <button @click="removeProduct(product.id)"
                 class="border-2 border-black bg-white px-2 py-1 text-xs font-extrabold uppercase cursor-pointer hover:bg-brand hover:text-white">Remove</button>
         </div>
     </li>
 </template>
 <script>
+import { useCartStore } from '@/stores/cart';
+import { mapActions } from 'pinia';
 export default {
     props: {
         product: {
@@ -27,7 +29,9 @@ export default {
             }
         }
     },
-    emits: ['remove'],
+    methods: {
+        ...mapActions(useCartStore, ['removeProduct'])
+    },
     computed: {
         total() {
             return this.product.quantity * this.product.price
