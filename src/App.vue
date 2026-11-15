@@ -1,16 +1,9 @@
 <template>
   <div class="min-h-screen bg-paper text-black font-sans">
     <AnnouncementBar />
-    <NavHeader :cart-count="cartCount" />
+    <NavHeader />
     <main id="top">
       <RouterView />
-      <!-- <HeroSection />
-      <FilterBar />
-      <ProductSection :products="products" @add-to-cart="addToCart" />
-      <CartSection @remove-product="removeProduct" :carts="carts" />
-      <PerkSection />
-      <FAQSection />
-      <NewsSletter /> -->
     </main>
     <FooterSection />
   </div>

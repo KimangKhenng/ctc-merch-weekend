@@ -17,6 +17,14 @@
                     </RouterLink>
                 </li>
                 <li>
+                    <RouterLink v-if="!isLoggedIn" to="/login"
+                        class="px-3 py-2 border-2 border-transparent hover:border-black">Login
+                    </RouterLink>
+                    <button v-else @click="logout"
+                        class="hover:cursor-pointer px-3 py-2 border-2 border-transparent hover:border-black">Logout
+                    </button>
+                </li>
+                <li>
                     <a href="#cart"
                         class="px-3 py-2 border-2 border-black bg-brand text-white shadow-brutal-sm flex items-center gap-2">
                         Cart
@@ -28,11 +36,16 @@
     </header>
 </template>
 <script>
-import { mapState } from 'pinia';
+import { mapState, mapActions } from 'pinia';
 import { useCartStore } from '@/stores/cart';
+import { useAuthStore } from '@/stores/auth';
 export default {
     computed: {
-        ...mapState(useCartStore, { cartCount: 'count' })
+        ...mapState(useCartStore, { cartCount: 'count' }),
+        ...mapState(useAuthStore, ['isLoggedIn'])
+    },
+    methods: {
+        ...mapActions(useAuthStore, ['logout'])
     }
 }
 </script>
