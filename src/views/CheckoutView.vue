@@ -1,19 +1,26 @@
 <template>
     <section class="max-w-3xl mx-auto px-6 py-10">
-        <div class="flex items-center gap-3 mb-6">
+        <div class="flex items-center gap-3 mb-2">
             <div class="w-4 h-4 bg-brand border-2 border-black"></div>
             <h1 class="text-2xl font-black uppercase">Checkout</h1>
         </div>
+        <p v-if="user" class="mb-6 text-sm font-bold">Ordering as {{ user.name }}</p>
 
         <!-- ORDER PLACED -->
         <div v-if="order" class="bg-white border-4 border-black shadow-brutal p-6 text-center">
             <p class="text-3xl font-black uppercase">Order placed!</p>
             <p v-if="orderId" class="mt-2 font-bold">Order #{{ orderId }}</p>
             <p class="mt-2 font-medium">Thanks for your purchase.</p>
-            <router-link to="/shops"
-                class="inline-block mt-5 border-2 border-black bg-brand text-white shadow-brutal-sm px-4 py-2 text-sm font-extrabold uppercase hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">
-                Keep shopping
-            </router-link>
+            <div class="mt-5 flex flex-wrap justify-center gap-3">
+                <router-link to="/orders"
+                    class="inline-block border-2 border-black bg-white px-4 py-2 text-sm font-extrabold uppercase hover:bg-yellow-300">
+                    View my orders
+                </router-link>
+                <router-link to="/shops"
+                    class="inline-block border-2 border-black bg-brand text-white shadow-brutal-sm px-4 py-2 text-sm font-extrabold uppercase hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">
+                    Keep shopping
+                </router-link>
+            </div>
         </div>
 
         <!-- EMPTY CART -->
@@ -68,10 +75,12 @@
 <script>
 import { mapActions, mapState } from 'pinia';
 import { useCartStore } from '@/stores/cart';
+import { useAuthStore } from '@/stores/auth';
 
 export default {
     computed: {
         ...mapState(useCartStore, ['carts', 'total', 'submitting', 'error', 'order']),
+        ...mapState(useAuthStore, ['user']),
         orderId() {
             return this.order?.id ?? this.order?.orderId ?? null
         }

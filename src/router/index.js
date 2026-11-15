@@ -7,17 +7,21 @@ import NotFoundView from "@/views/NotFoundView.vue";
 import ProductDetailView from "@/views/ProductDetailView.vue";
 import CheckoutView from "@/views/CheckoutView.vue";
 import LoginView from "@/views/LoginView.vue";
+import OrdersView from "@/views/OrdersView.vue";
+import AdminView from "@/views/AdminView.vue";
 
 import { useAuthStore } from "@/stores/auth";
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        { path: '/', component: HomePage },
+        { path: '/', name: "home", component: HomePage },
         { path: '/about', component: AboutPage },
         { path: '/shops', component: ShopPage },
         { path: "/products/:id", name: "product", component: ProductDetailView },
         { path: "/checkout", name: "checkout", component: CheckoutView, meta: { requiresAuth: true } },
+        { path: "/orders", name: "orders", component: OrdersView, meta: { requiresAuth: true } },
+        { path: "/admin", name: "admin", component: AdminView, meta: { requiresAuth: true, requiresAdmin: true } },
         { path: "/login", name: 'login', component: LoginView },
         { path: "/:pathMatch(.*)*", name: "not-found", component: NotFoundView },
     ],

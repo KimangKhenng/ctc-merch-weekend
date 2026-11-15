@@ -29,31 +29,30 @@
         </div>
     </article>
 </template>
-<script>
-import { mapActions } from 'pinia';
+<script setup>
+import { useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cart';
-export default {
-    props: {
-        product: {
-            type: Object,
-            default: () => {
-                return {
-                    id: 1,
-                    name: "Semicolon Sticker Pack",
-                    category: "Stickers",
-                    price: 4.0,
-                    oldPrice: null,
-                    soldOut: false,
-                    description: "10 vinyl stickers for your laptop."
-                }
+const props = defineProps({
+    product: {
+        type: Object,
+        default: () => {
+            return {
+                id: 1,
+                name: "Semicolon Sticker Pack",
+                category: "Stickers",
+                price: 4.0,
+                oldPrice: null,
+                soldOut: false,
+                description: "10 vinyl stickers for your laptop."
             }
         }
-    },
-    methods: {
-        goToProduct() {
-            this.$router.push(`/products/${this.product.id}`)
-        },
-        ...mapActions(useCartStore, ['addToCart'])
     }
+})
+const router = useRouter()
+const cartStore = useCartStore()
+const addToCart = cartStore.addToCart
+
+const goToProduct = () => {
+    router.push(`/products/${props.product.id}`)
 }
 </script>

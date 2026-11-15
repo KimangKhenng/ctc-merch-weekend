@@ -16,11 +16,19 @@
                     <RouterLink to="/about" class="px-3 py-2 border-2 border-transparent hover:border-black">About
                     </RouterLink>
                 </li>
+                <li v-if="isLoggedIn">
+                    <RouterLink to="/orders" class="px-3 py-2 border-2 border-transparent hover:border-black">Orders
+                    </RouterLink>
+                </li>
+                <li v-if="isAdmin">
+                    <RouterLink to="/admin" class="px-3 py-2 border-2 border-transparent hover:border-black">Admin
+                    </RouterLink>
+                </li>
                 <li>
                     <RouterLink v-if="!isLoggedIn" to="/login"
                         class="px-3 py-2 border-2 border-transparent hover:border-black">Login
                     </RouterLink>
-                    <button v-else @click="logout"
+                    <button v-else @click="handleLogout"
                         class="hover:cursor-pointer px-3 py-2 border-2 border-transparent hover:border-black">Logout
                     </button>
                 </li>
@@ -42,10 +50,17 @@ import { useAuthStore } from '@/stores/auth';
 export default {
     computed: {
         ...mapState(useCartStore, { cartCount: 'count' }),
-        ...mapState(useAuthStore, ['isLoggedIn'])
+        ...mapState(useAuthStore, ['isLoggedIn', 'isAdmin'])
     },
     methods: {
-        ...mapActions(useAuthStore, ['logout'])
+        ...mapActions(useAuthStore, ['logout']),
+        handleLogout() {
+            this.logout();
+            // A protected page would now bounce us to login anyway; send the user to the home page instead
+            if (this.$route.meta.requiresAuth) {
+                this.$router.push('/');
+            }
+        }
     }
 }
 </script>
