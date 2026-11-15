@@ -5,6 +5,7 @@ import ShopPage from "@/views/ShopPage.vue";
 import AboutPage from "@/views/AboutPage.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
 import ProductDetailView from "@/views/ProductDetailView.vue";
+import CheckoutView from "@/views/CheckoutView.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -13,6 +14,7 @@ const router = createRouter({
         { path: '/about', component: AboutPage },
         { path: '/shops', component: ShopPage },
         { path: "/products/:id", name: "product", component: ProductDetailView },
+        { path: "/checkout", name: "checkout", component: CheckoutView },
         { path: "/:pathMatch(.*)*", name: "not-found", component: NotFoundView },
     ],
     linkActiveClass: 'bg-black border-black text-white',

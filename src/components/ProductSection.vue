@@ -35,19 +35,20 @@
 </template>
 <script>
 import ProductCard from '@/components/products/ProductCard.vue'
+import { useProductStore } from '@/stores/product';
+import { mapActions, mapState } from 'pinia';
 export default {
     components: { ProductCard },
     data() {
         return {
-            products: [],
             perPages: [8, 16, 24, 32],
-            meta: {
-                page: 1,
-                limit: 8
-            },
-            loading: false,
-            error: {}
         }
+    },
+    computed: {
+        ...mapState(useProductStore, ['products', 'meta', 'loading', 'error'])
+    },
+    methods: {
+        ...mapActions(useProductStore, ['fetchProducts', 'nextPage', 'prevPage'])
     },
     created() {
         this.fetchProducts()
@@ -59,36 +60,5 @@ export default {
             }, deep: true
         }
     },
-    emits: ['addToCart'],
-    methods: {
-        addToCart(product) {
-            this.$emit('addToCart', product)
-        },
-        async fetchProducts() {
-            this.loading = true
-            try {
-                const BASE = import.meta.env.VITE_API_URL;
-                // Config
-                const products = await fetch(`${BASE}/products?category=All&page=${this.meta.page}&limit=${this.meta.limit}`)
-                const data = await products.json()
-                this.products = data.data
-                // this.meta = data.meta
-            } catch (err) {
-                this.error = err.message
-            } finally {
-                this.loading = false
-            }
-        },
-        async nextPage() {
-            this.meta.page++
-            await this.fetchProducts()
-        },
-        async prevPage() {
-            if (this.meta.page > 1) {
-                this.meta.page--
-                await this.fetchProducts()
-            }
-        }
-    }
 }
 </script>
